@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SunHearth · MythGear Commons</title>
+  <meta name="description" content="SunHearth — a micro-flame instrument of warmth, reflection, and attentive gathering.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=Instrument+Sans:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink:    #16120e;
+      --paper:  #f4f0e8;
+      --warm:   #e8e0cc;
+      --line:   rgba(22,18,14,0.14);
+      --line-s: rgba(22,18,14,0.07);
+      --rust:   #9c4a1a;
+      --moss:   #4a6340;
+      --slate:  #3a4a5c;
+      --ochre:  #b8842a;
+      --muted:  #6e6050;
+      --faint:  #a09080;
+      --max:    860px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Instrument Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+    a { color: var(--rust); text-decoration: none; transition: color .18s; }
+    a:hover { color: var(--ink); text-decoration: underline; }
+
+    /* ── Nav ── */
+    .mg-nav {
+      background: var(--ink);
+      position: sticky; top: 0; z-index: 100;
+      border-bottom: 2px solid var(--rust);
+    }
+    .mg-nav-inner {
+      max-width: var(--max); margin: 0 auto;
+      padding: .55rem 1.4rem;
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    }
+    .mg-brand {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.05rem; letter-spacing: .04em;
+      color: var(--paper); text-decoration: none;
+      white-space: nowrap;
+    }
+    .mg-brand:hover { color: #fff; text-decoration: none; }
+    .mg-nav-links { list-style: none; display: flex; flex-wrap: wrap; gap: 0; }
+    .mg-nav-links a {
+      color: var(--faint); font-size: .76rem; padding: .22rem .48rem;
+      text-decoration: none; letter-spacing: .04em;
+      transition: color .14s;
+    }
+    .mg-nav-links a:hover  { color: var(--paper); text-decoration: none; }
+    .mg-nav-links a.active { color: var(--ochre); }
+
+    /* ── Page wrapper ── */
+    .mg-page {
+      max-width: var(--max); margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    /* ── Page header ── */
+    .mg-header {
+      margin-bottom: 2.8rem;
+      padding-bottom: 1.8rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .mg-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: .68rem; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--faint);
+      margin-bottom: .7rem;
+    }
+    .mg-header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 400; line-height: 1.1;
+      color: var(--ink); letter-spacing: .01em;
+      margin-bottom: .5rem;
+    }
+    .mg-sub {
+      font-size: .95rem; color: var(--muted);
+      max-width: 58ch; line-height: 1.65;
+    }
+    .mg-back {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: .68rem; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--faint);
+      text-decoration: none; margin-bottom: 2rem;
+      transition: color .18s;
+    }
+    .mg-back:hover { color: var(--rust); text-decoration: none; }
+    .mg-back::before { content: '← '; }
+
+    /* ── Typography ── */
+    h2 {
+      font-family: 'DM Serif Display', serif;
+      font-weight: 400; font-size: 1.4rem;
+      color: var(--ink); margin: 2rem 0 .5rem;
+      letter-spacing: .01em;
+    }
+    h3 {
+      font-family: 'DM Mono', monospace;
+      font-size: .78rem; font-weight: 400;
+      text-transform: uppercase; letter-spacing: .14em;
+      color: var(--rust); margin: 1.5rem 0 .4rem;
+    }
+    p { font-size: .95rem; color: var(--muted); margin-bottom: .8rem; }
+    p strong { color: var(--ink); font-weight: 400; }
+    ul, ol { padding-left: 1.2rem; margin-bottom: 1rem; }
+    li { font-size: .93rem; color: var(--muted); margin-bottom: .3rem; }
+    li strong { color: var(--ink); font-weight: 400; }
+
+    /* ── Card ── */
+    .mg-card {
+      background: var(--warm);
+      border: 1px solid var(--line);
+      padding: 1.3rem 1.4rem;
+      margin: 1.2rem 0;
+    }
+    .mg-card h2 { margin-top: 0; }
+    .mg-card h3:first-child { margin-top: 0; }
+
+    /* ── Callout ── */
+    .mg-callout {
+      border-left: 3px solid var(--rust);
+      padding: .6rem .9rem;
+      background: rgba(156,74,26,.06);
+      font-size: .88rem; color: var(--muted);
+      margin: .9rem 0;
+    }
+    .mg-callout strong { color: var(--rust); font-weight: 400; }
+    .mg-note {
+      border-left: 3px solid var(--moss);
+      padding: .6rem .9rem;
+      background: rgba(74,99,64,.06);
+      font-size: .88rem; color: var(--muted);
+      margin: .9rem 0;
+    }
+    .mg-note strong { color: var(--moss); font-weight: 400; }
+    .mg-safety {
+      border-left: 3px solid #8b2000;
+      padding: .6rem .9rem;
+      background: rgba(139,32,0,.06);
+      font-size: .88rem; color: #5c1a00;
+      margin: .9rem 0;
+    }
+
+    /* ── Blockquote ── */
+    blockquote {
+      font-family: 'DM Serif Display', serif;
+      font-style: italic; font-size: 1.15rem;
+      color: var(--ink); border-left: 2px solid var(--ochre);
+      padding-left: 1rem; margin: 1.4rem 0;
+      line-height: 1.6;
+    }
+
+    /* ── Rule ── */
+    .mg-rule { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+
+    /* ── Pill ── */
+    .mg-pill {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--faint);
+      border: 1px solid var(--line);
+      padding: .1rem .5rem; margin: .15rem .2rem .15rem 0;
+    }
+    .mg-pill.rust  { color: var(--rust); border-color: rgba(156,74,26,.3); }
+    .mg-pill.moss  { color: var(--moss); border-color: rgba(74,99,64,.3); }
+    .mg-pill.slate { color: var(--slate); border-color: rgba(58,74,92,.3); }
+
+    /* ── Grid ── */
+    .mg-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1px;
+      border: 1px solid var(--line);
+      margin: 1.2rem 0;
+      background: var(--line);
+    }
+    .mg-grid-item {
+      background: var(--paper);
+      padding: 1.1rem 1.2rem;
+    }
+    .mg-grid-item h3 { margin-top: 0; }
+
+    /* ── Device card (index grid) ── */
+    .mg-device-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1px;
+      border: 1px solid var(--line);
+      background: var(--line);
+      margin: 1.4rem 0;
+    }
+    .mg-device {
+      background: var(--paper);
+      padding: 1.2rem;
+      transition: background .18s;
+    }
+    .mg-device:hover { background: var(--warm); }
+    .mg-device-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem; color: var(--ink);
+      margin-bottom: .3rem; display: block;
+      text-decoration: none;
+    }
+    .mg-device-name:hover { color: var(--rust); text-decoration: none; }
+    .mg-device-desc { font-size: .85rem; color: var(--faint); line-height: 1.55; }
+    .mg-device-status {
+      font-family: 'DM Mono', monospace;
+      font-size: .62rem; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--faint);
+      margin-top: .6rem;
+    }
+
+    /* ── Footer ── */
+    .mg-footer {
+      margin-top: 4rem; padding-top: 1.4rem;
+      border-top: 2px solid var(--line);
+      font-family: 'DM Mono', monospace;
+      font-size: .72rem; letter-spacing: .08em;
+      color: var(--faint); line-height: 1.9;
+    }
+    .mg-footer a { color: var(--faint); }
+    .mg-footer a:hover { color: var(--rust); }
+
+    /* ── Responsive ── */
+    @media (max-width: 520px) {
+      .mg-page { padding: 2rem 1.1rem 4rem; }
+    }
+    @media print {
+      .mg-nav { display: none; }
+      .mg-safety { border-color: #000; background: none; }
+    }
+  </style>
+
+</head>
+<body>
+<nav class="mg-nav" aria-label="Primary">
+  <div class="mg-nav-inner">
+    <a href="../index.html" class="mg-brand">MythGear Commons</a>
+    <ul class="mg-nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../sunhearth/index.html" class="active">SunHearth</a></li>
+      <li><a href="../dreamhearth/index.html">DreamHearth</a></li>
+      <li><a href="../spidervine/index.html">SpiderVine</a></li>
+      <li><a href="../hearthwheel/index.html">HearthWheel</a></li>
+      <li><a href="../gloves/index.html">Gloves</a></li>
+      <li><a href="../code-tape/index.html">CodeTape</a></li>
+        <li><a href="https://jacobo-dm.github.io/signal-finder-codetape/">Signal Finder</a></li>
+        <li><a href="../dreamhatchery/index.html">DreamHatchery</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="mg-page">
+
+  <a href="../index.html" class="mg-back">MythGear Commons</a>
+
+  <div class="mg-header">
+    <div class="mg-tag">MythGear · Warmth &amp; Attention</div>
+    <h1>SunHearth</h1>
+    <p class="mg-sub">A micro-flame instrument of warmth, reflection, and attentive gathering. Not a heater — a teaching lantern that shows how warmth travels when we tend it with care.</p>
+  </div>
+
+  <div class="mg-card">
+    <p>The SunHearth is built on three simple principles: <strong>the Little Flame</strong> (the seed of warmth), <strong>the Shaping Bowl</strong> (the horizon that gathers and reflects), and <strong>the Watching Stone</strong> (the presence that listens). Together they form a small universe — sun, earth, sky.</p>
+    <p>It is not powerful on its own. It is powerful when people gather around it together.</p>
+  </div>
+
+  <h2>Pages</h2>
+  <div class="mg-grid">
+    <div class="mg-grid-item">
+      <h3>Lore</h3>
+      <p><a href="sunhearth-lore.html">SunHearth Lore</a> — the canonical entry. What it is, what it means, the symbol language.</p>
+    </div>
+    <div class="mg-grid-item">
+      <h3>Circle of Warmth</h3>
+      <p><a href="sunhearth-circle-of-warmth.html">Circle of Warmth</a> — the classroom inquiry. Professor Mitsyfibbins arrives shivering. The questions are warm.</p>
+    </div>
+    <div class="mg-grid-item">
+      <h3>Origin Story</h3>
+      <p><a href="sunhearth-first-sunhearth.html">The First SunHearth</a> — a winter tale for story circles and classroom openings.</p>
+    </div>
+    <div class="mg-grid-item">
+      <h3>Safety Charter</h3>
+      <p><a href="sunhearth-safety-charter.html">Safety Charter</a> — reference for teachers. What this is, what it is not, and how to hold it carefully.</p>
+    </div>
+  </div>
+
+  <div class="mg-callout">
+    <strong>Commons note:</strong> SunHearth is a supervised classroom instrument. It is not offered as a guide for building heating devices in homes or shelters.
+  </div>
+
+  <div class="mg-footer">
+    <p>
+      SunHearth · Concept by Jacobo Hernández Durbin · braided with Elummannín + the Braid<br>
+      Part of MythGear Commons · CC BY-NC-SA 4.0<br>
+      <a href="../index.html">← MythGear Commons</a>
+    </p>
+  </div>
+
+</div>
+</body>
+</html>

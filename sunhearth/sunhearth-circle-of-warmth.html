@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MythGear · Micro-Radiant Heat Inquiry (The SunHearth)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="A MythGear classroom inquiry into micro-radiant heat, safety, and ancestral ingenuity. Designed for supervised, sensor-based exploration, not as a DIY home heater.">
+
+  
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=Instrument+Sans:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink:    #16120e;
+      --paper:  #f4f0e8;
+      --warm:   #e8e0cc;
+      --line:   rgba(22,18,14,0.14);
+      --line-s: rgba(22,18,14,0.07);
+      --rust:   #9c4a1a;
+      --moss:   #4a6340;
+      --slate:  #3a4a5c;
+      --ochre:  #b8842a;
+      --muted:  #6e6050;
+      --faint:  #a09080;
+      --max:    860px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Instrument Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+    a { color: var(--rust); text-decoration: none; transition: color .18s; }
+    a:hover { color: var(--ink); text-decoration: underline; }
+
+    /* ── Nav ── */
+    .mg-nav {
+      background: var(--ink);
+      position: sticky; top: 0; z-index: 100;
+      border-bottom: 2px solid var(--rust);
+    }
+    .mg-nav-inner {
+      max-width: var(--max); margin: 0 auto;
+      padding: .55rem 1.4rem;
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    }
+    .mg-brand {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.05rem; letter-spacing: .04em;
+      color: var(--paper); text-decoration: none;
+      white-space: nowrap;
+    }
+    .mg-brand:hover { color: #fff; text-decoration: none; }
+    .mg-nav-links { list-style: none; display: flex; flex-wrap: wrap; gap: 0; }
+    .mg-nav-links a {
+      color: var(--faint); font-size: .76rem; padding: .22rem .48rem;
+      text-decoration: none; letter-spacing: .04em;
+      transition: color .14s;
+    }
+    .mg-nav-links a:hover  { color: var(--paper); text-decoration: none; }
+    .mg-nav-links a.active { color: var(--ochre); }
+
+    /* ── Page wrapper ── */
+    .mg-page {
+      max-width: var(--max); margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    /* ── Page header ── */
+    .mg-header {
+      margin-bottom: 2.8rem;
+      padding-bottom: 1.8rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .mg-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: .68rem; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--faint);
+      margin-bottom: .7rem;
+    }
+    .mg-header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 400; line-height: 1.1;
+      color: var(--ink); letter-spacing: .01em;
+      margin-bottom: .5rem;
+    }
+    .mg-sub {
+      font-size: .95rem; color: var(--muted);
+      max-width: 58ch; line-height: 1.65;
+    }
+    .mg-back {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: .68rem; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--faint);
+      text-decoration: none; margin-bottom: 2rem;
+      transition: color .18s;
+    }
+    .mg-back:hover { color: var(--rust); text-decoration: none; }
+    .mg-back::before { content: '← '; }
+
+    /* ── Typography ── */
+    h2 {
+      font-family: 'DM Serif Display', serif;
+      font-weight: 400; font-size: 1.4rem;
+      color: var(--ink); margin: 2rem 0 .5rem;
+      letter-spacing: .01em;
+    }
+    h3 {
+      font-family: 'DM Mono', monospace;
+      font-size: .78rem; font-weight: 400;
+      text-transform: uppercase; letter-spacing: .14em;
+      color: var(--rust); margin: 1.5rem 0 .4rem;
+    }
+    p { font-size: .95rem; color: var(--muted); margin-bottom: .8rem; }
+    p strong { color: var(--ink); font-weight: 400; }
+    ul, ol { padding-left: 1.2rem; margin-bottom: 1rem; }
+    li { font-size: .93rem; color: var(--muted); margin-bottom: .3rem; }
+    li strong { color: var(--ink); font-weight: 400; }
+
+    /* ── Card ── */
+    .mg-card {
+      background: var(--warm);
+      border: 1px solid var(--line);
+      padding: 1.3rem 1.4rem;
+      margin: 1.2rem 0;
+    }
+    .mg-card h2 { margin-top: 0; }
+    .mg-card h3:first-child { margin-top: 0; }
+
+    /* ── Callout ── */
+    .mg-callout {
+      border-left: 3px solid var(--rust);
+      padding: .6rem .9rem;
+      background: rgba(156,74,26,.06);
+      font-size: .88rem; color: var(--muted);
+      margin: .9rem 0;
+    }
+    .mg-callout strong { color: var(--rust); font-weight: 400; }
+    .mg-note {
+      border-left: 3px solid var(--moss);
+      padding: .6rem .9rem;
+      background: rgba(74,99,64,.06);
+      font-size: .88rem; color: var(--muted);
+      margin: .9rem 0;
+    }
+    .mg-note strong { color: var(--moss); font-weight: 400; }
+    .mg-safety {
+      border-left: 3px solid #8b2000;
+      padding: .6rem .9rem;
+      background: rgba(139,32,0,.06);
+      font-size: .88rem; color: #5c1a00;
+      margin: .9rem 0;
+    }
+
+    /* ── Blockquote ── */
+    blockquote {
+      font-family: 'DM Serif Display', serif;
+      font-style: italic; font-size: 1.15rem;
+      color: var(--ink); border-left: 2px solid var(--ochre);
+      padding-left: 1rem; margin: 1.4rem 0;
+      line-height: 1.6;
+    }
+
+    /* ── Rule ── */
+    .mg-rule { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+
+    /* ── Pill ── */
+    .mg-pill {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--faint);
+      border: 1px solid var(--line);
+      padding: .1rem .5rem; margin: .15rem .2rem .15rem 0;
+    }
+    .mg-pill.rust  { color: var(--rust); border-color: rgba(156,74,26,.3); }
+    .mg-pill.moss  { color: var(--moss); border-color: rgba(74,99,64,.3); }
+    .mg-pill.slate { color: var(--slate); border-color: rgba(58,74,92,.3); }
+
+    /* ── Grid ── */
+    .mg-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1px;
+      border: 1px solid var(--line);
+      margin: 1.2rem 0;
+      background: var(--line);
+    }
+    .mg-grid-item {
+      background: var(--paper);
+      padding: 1.1rem 1.2rem;
+    }
+    .mg-grid-item h3 { margin-top: 0; }
+
+    /* ── Device card (index grid) ── */
+    .mg-device-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1px;
+      border: 1px solid var(--line);
+      background: var(--line);
+      margin: 1.4rem 0;
+    }
+    .mg-device {
+      background: var(--paper);
+      padding: 1.2rem;
+      transition: background .18s;
+    }
+    .mg-device:hover { background: var(--warm); }
+    .mg-device-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem; color: var(--ink);
+      margin-bottom: .3rem; display: block;
+      text-decoration: none;
+    }
+    .mg-device-name:hover { color: var(--rust); text-decoration: none; }
+    .mg-device-desc { font-size: .85rem; color: var(--faint); line-height: 1.55; }
+    .mg-device-status {
+      font-family: 'DM Mono', monospace;
+      font-size: .62rem; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--faint);
+      margin-top: .6rem;
+    }
+
+    /* ── Footer ── */
+    .mg-footer {
+      margin-top: 4rem; padding-top: 1.4rem;
+      border-top: 2px solid var(--line);
+      font-family: 'DM Mono', monospace;
+      font-size: .72rem; letter-spacing: .08em;
+      color: var(--faint); line-height: 1.9;
+    }
+    .mg-footer a { color: var(--faint); }
+    .mg-footer a:hover { color: var(--rust); }
+
+    /* ── Responsive ── */
+    @media (max-width: 520px) {
+      .mg-page { padding: 2rem 1.1rem 4rem; }
+    }
+    @media print {
+      .mg-nav { display: none; }
+      .mg-safety { border-color: #000; background: none; }
+    }
+  </style>
+
+</head>
+<body>
+
+<nav class="mg-nav" aria-label="Primary">
+  <div class="mg-nav-inner">
+    <a href="../index.html" class="mg-brand">MythGear Commons</a>
+    <ul class="mg-nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../sunhearth/index.html">SunHearth</a></li>
+      <li><a href="../dreamhearth/index.html">DreamHearth</a></li>
+      <li><a href="../spidervine/index.html">SpiderVine</a></li>
+      <li><a href="../hearthwheel/index.html">HearthWheel</a></li>
+      <li><a href="../gloves/index.html">Gloves</a></li>
+      <li><a href="../code-tape/index.html">CodeTape</a></li>
+    </ul>
+  </div>
+</nav>
+<div class="mg-page">
+<a href="../index.html" class="mg-back">MythGear Commons</a>
+<div class="mg-header">
+  <div class="mg-tag">SunHearth · Classroom Inquiry</div>
+  <h1>Circle of Warmth · Micro-Radiant Heat</h1>
+  <p class="mg-sub">A supervised exploration of heat, geometry, and ancestral ingenuity.</p>
+</div>
+<div class="page">
+    
+
+    <main>
+      <!-- Left column: Story + Lesson Flow -->
+      <section>
+        <article class="mg-card">
+          <h2>Origin Story</h2>
+          <p class="tagline">Professor Mitsyfibbins arrives shivering. The room is a little cold. The questions are very warm.</p>
+          <p>
+            This MythGear module began with a simple observation: even a small flame can feel surprisingly warm when it is guided by the right shapes, surfaces, and stories. Rather than publishing “DIY heater” instructions, Circle of Warmth turns this into a <strong>guided science inquiry</strong> about how heat moves and how humans have learned to steward it with care.
+          </p>
+          <p>
+            The result is a lesson where students measure, notice, and reflect — connecting <strong>thermodynamics, safety, ancestral knowledge, geometry, and embodiment</strong> in one shared experience.
+          </p>
+        </article>
+
+        <article class="mg-card">
+          <h2>Learning Goals</h2>
+          <p>By the end of Circle of Warmth, students will be able to:</p>
+          <ul>
+            <li>Describe the difference between <strong>conduction, convection, and radiation</strong> in simple terms.</li>
+            <li>Explain why curved or parabolic shapes can change how we feel <strong>heat, light, and sound</strong>.</li>
+            <li>Define <strong>safe</strong>, <strong>clean</strong>, and <strong>efficient</strong> in the context of small, supervised flames.</li>
+            <li>Use sensors or simple tools to <strong>measure and record</strong> temperature and warmth.</li>
+            <li>Reflect on how ancestral and low-tech solutions have helped people stay warm with very little fuel.</li>
+          </ul>
+          <div>
+            <span class="mg-pill">Thermodynamics</span>
+            <span class="mg-pill">Geometry</span>
+            <span class="mg-pill">Safety</span>
+            <span class="mg-pill">Ancestral Engineering</span>
+          </div>
+        </article>
+
+        <article class="mg-card">
+          <h2>Lesson Flow · Circle of Warmth</h2>
+          <ol>
+            <li><strong>Arrival &amp; Atmosphere</strong> – Professor Mitsyfibbins enters shivering and asks, “Are you not cold?” The class names what they notice about the room and their own bodies.</li>
+            <li><strong>Sensors &amp; First Readings</strong> – Students receive simple thermometers or IR sensors and take baseline readings of hands, walls, desks, and other objects.</li>
+            <li><strong>Silent Object Table</strong> – A bowl, small candle (unlit), stones, foil, a metal cup, and a hoodie are placed where everyone can see them. Students share hypotheses: how might these relate to warmth?</li>
+            <li><strong>Key Words</strong> – On the board: <strong>SAFE · CLEAN · EFFICIENT</strong>. Students co-define each term in the context of fire and air.</li>
+            <li><strong>Dangerous vs Safe Fuels</strong> – Short, teacher-guided discussion on what should never be burned and why (plastics, mystery liquids, large piles of paper, etc.). Emphasis: <em>this lesson does not invent new fuels</em>.</li>
+            <li><strong>Parabolas &amp; Hoodies</strong> – Students test how light reflects in a curved bowl and how sound changes when someone wears a hood. They connect hood, bowl, and dome as cousin shapes.</li>
+            <li><strong>Teacher Demonstration Flame</strong> – The teacher lights a single small candle in a stable holder, on a non-flammable surface, inside a reflective bowl. Students measure warmth at different distances and angles.</li>
+            <li><strong>Heat Dome Variation</strong> – A simple reflective “dome” (e.g., aluminum foil) is added above the demonstration setup. Students repeat measurements and compare changes.</li>
+            <li><strong>Reflection &amp; Closure</strong> – The class returns to SAFE · CLEAN · EFFICIENT and writes or shares one insight about how a tiny flame can share warmth when guided wisely.</li>
+          </ol>
+          <div class="mg-callout">
+            <strong>Note:</strong> At all times, the teacher is the only person who lights, moves, or extinguishes the flame. Students observe, feel at a safe distance, and measure — they do not handle fire.
+          </div>
+        </article>
+      </section>
+
+      <!-- Right column: Safety + Scripts + Snippets -->
+      <aside>
+        <article class="mg-safety">
+          <h2>Safety Charter</h2>
+          <p><strong>This module is a supervised classroom inquiry, not a DIY home heater guide.</strong></p>
+          <ul>
+            <li>The teacher is the only person who lights, moves, or extinguishes the flame.</li>
+            <li>The flame stays on a stable, non-flammable surface (stone, metal, ceramic), with clear space around it.</li>
+            <li>No paper, cloth, hair, or plastic hangs over or near the flame.</li>
+            <li>The flame is never left unattended. If the teacher must step away, the flame is extinguished first.</li>
+            <li>Ventilation is provided (open door/window), and only familiar, low-smoke fuels (e.g., a single small candle) are used.</li>
+            <li>Students are reminded that this setup is for <strong>classroom exploration only</strong> and should not be reproduced at home without adult supervision and appropriate safety measures.</li>
+          </ul>
+        </article>
+
+        <article class="mg-card">
+          <h2>Opening Script (Professor Mitsyfibbins)</h2>
+          <p class="codeish">
+            “Brrrr… oh my. Is anyone else cold today?<br><br>
+            Good. That means your bodies are awake and paying attention.<br>
+            Today, we’re going to study something very ordinary and very magical: <strong>warmth</strong>.<br><br>
+            Scientists don’t just feel warmth — we also measure it. Today, <em>you</em> are the scientists. These are your tools.”
+          </p>
+          <p>
+            From here, the professor hands out sensors, invites first readings, and slowly reveals how the bowl, hood, foil, and tiny flame will become part of one shared inquiry.
+          </p>
+        </article>
+
+        <article class="mg-card">
+          <h2>Mini Experiment · Hood &amp; Parabola</h2>
+          <p>
+            Students work in pairs:
+          </p>
+          <ol>
+            <li>One student wears a hoodie with the hood down; the partner speaks softly from a short distance.</li>
+            <li>The listener pulls the hood up and repeats the test.</li>
+            <li>Together, they describe how sound and feeling change and connect that to curved shapes like bowls, domes, and shells.</li>
+          </ol>
+          <p>
+            This experiment gently links <strong>geometry, acoustics, and embodiment</strong> in a way students remember long after the class ends.
+          </p>
+        </article>
+
+        <article class="mg-card">
+          <h2>Closing Ritual · Circle of Warmth</h2>
+          <p class="codeish">
+            “Look at this little flame we’ve been studying.<br>
+            It’s just one small light.<br><br>
+            But what did it do today?<br><br>
+            Even a tiny flame can share warmth<br>
+            if we guide it with care.<br><br>
+            Take one breath and notice the warmth in your own chest.<br>
+            That is also a kind of fire.<br>
+            When we care about each other,<br>
+            we help keep that fire alive.”
+          </p>
+        </article>
+      </aside>
+    </main>
+
+    <p class="footer-note">
+      MythGear · Circle of Warmth is shared as an educational resource for supervised classroom inquiry.
+      It is not intended or offered as a substitute for building or using heating devices in homes or shelters.
+    </p>
+  </div>
+</div>
+
+</body>
+</html>

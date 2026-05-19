@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MythGear Commons</title>
+  <meta name="description" content="MythGear Commons — open, human-scale tools for movement, rest, warmth, and repair.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=Instrument+Sans:wght@300;400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --ink:    #16120e;
+      --paper:  #f4f0e8;
+      --warm:   #e8e0cc;
+      --line:   rgba(22,18,14,0.14);
+      --line-s: rgba(22,18,14,0.07);
+      --rust:   #9c4a1a;
+      --moss:   #4a6340;
+      --slate:  #3a4a5c;
+      --ochre:  #b8842a;
+      --muted:  #6e6050;
+      --faint:  #a09080;
+      --max:    860px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Instrument Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    a {
+      color: var(--rust);
+      text-decoration: none;
+      transition: color .18s;
+    }
+
+    a:hover {
+      color: var(--ink);
+      text-decoration: underline;
+    }
+
+    /* ── Nav ── */
+
+    .mg-nav {
+      background: var(--ink);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 2px solid var(--rust);
+    }
+
+    .mg-nav-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: .55rem 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .mg-brand {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.05rem;
+      letter-spacing: .04em;
+      color: var(--paper);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .mg-brand:hover {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .mg-nav-links {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+    }
+
+    .mg-nav-links a {
+      color: var(--faint);
+      font-size: .76rem;
+      padding: .22rem .48rem;
+      text-decoration: none;
+      letter-spacing: .04em;
+      transition: color .14s;
+    }
+
+    .mg-nav-links a:hover {
+      color: var(--paper);
+      text-decoration: none;
+    }
+
+    .mg-nav-links a.active {
+      color: var(--ochre);
+    }
+
+    /* ── Page wrapper ── */
+
+    .mg-page {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    /* ── Page header ── */
+
+    .mg-header {
+      margin-bottom: 2.8rem;
+      padding-bottom: 1.8rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .mg-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: .68rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--faint);
+      margin-bottom: .7rem;
+    }
+
+    .mg-header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 400;
+      line-height: 1.1;
+      color: var(--ink);
+      letter-spacing: .01em;
+      margin-bottom: .5rem;
+    }
+
+    .mg-sub {
+      font-size: .95rem;
+      color: var(--muted);
+      max-width: 58ch;
+      line-height: 1.65;
+    }
+
+    .mg-back {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: .68rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--faint);
+      text-decoration: none;
+      margin-bottom: 2rem;
+      transition: color .18s;
+    }
+
+    .mg-back:hover {
+      color: var(--rust);
+      text-decoration: none;
+    }
+
+    .mg-back::before {
+      content: '← ';
+    }
+
+    /* ── Typography ── */
+
+    h2 {
+      font-family: 'DM Serif Display', serif;
+      font-weight: 400;
+      font-size: 1.4rem;
+      color: var(--ink);
+      margin: 2rem 0 .5rem;
+      letter-spacing: .01em;
+    }
+
+    h3 {
+      font-family: 'DM Mono', monospace;
+      font-size: .78rem;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      color: var(--rust);
+      margin: 1.5rem 0 .4rem;
+    }
+
+    p {
+      font-size: .95rem;
+      color: var(--muted);
+      margin-bottom: .8rem;
+    }
+
+    p strong {
+      color: var(--ink);
+      font-weight: 400;
+    }
+
+    ul,
+    ol {
+      padding-left: 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    li {
+      font-size: .93rem;
+      color: var(--muted);
+      margin-bottom: .3rem;
+    }
+
+    li strong {
+      color: var(--ink);
+      font-weight: 400;
+    }
+
+    /* ── Card ── */
+
+    .mg-card {
+      background: var(--warm);
+      border: 1px solid var(--line);
+      padding: 1.3rem 1.4rem;
+      margin: 1.2rem 0;
+    }
+
+    .mg-card h2 {
+      margin-top: 0;
+    }
+
+    .mg-card h3:first-child {
+      margin-top: 0;
+    }
+
+    /* ── Callout ── */
+
+    .mg-callout {
+      border-left: 3px solid var(--rust);
+      padding: .6rem .9rem;
+      background: rgba(156,74,26,.06);
+      font-size: .88rem;
+      color: var(--muted);
+      margin: .9rem 0;
+    }
+
+    .mg-callout strong {
+      color: var(--rust);
+      font-weight: 400;
+    }
+
+    .mg-note {
+      border-left: 3px solid var(--moss);
+      padding: .6rem .9rem;
+      background: rgba(74,99,64,.06);
+      font-size: .88rem;
+      color: var(--muted);
+      margin: .9rem 0;
+    }
+
+    .mg-note strong {
+      color: var(--moss);
+      font-weight: 400;
+    }
+
+    .mg-safety {
+      border-left: 3px solid #8b2000;
+      padding: .6rem .9rem;
+      background: rgba(139,32,0,.06);
+      font-size: .88rem;
+      color: #5c1a00;
+      margin: .9rem 0;
+    }
+
+    /* ── Blockquote ── */
+
+    blockquote {
+      font-family: 'DM Serif Display', serif;
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--ink);
+      border-left: 2px solid var(--ochre);
+      padding-left: 1rem;
+      margin: 1.4rem 0;
+      line-height: 1.6;
+    }
+
+    /* ── Rule ── */
+
+    .mg-rule {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 2rem 0;
+    }
+
+    /* ── Pill ── */
+
+    .mg-pill {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--faint);
+      border: 1px solid var(--line);
+      padding: .1rem .5rem;
+      margin: .15rem .2rem .15rem 0;
+    }
+
+    .mg-pill.rust {
+      color: var(--rust);
+      border-color: rgba(156,74,26,.3);
+    }
+
+    .mg-pill.moss {
+      color: var(--moss);
+      border-color: rgba(74,99,64,.3);
+    }
+
+    .mg-pill.slate {
+      color: var(--slate);
+      border-color: rgba(58,74,92,.3);
+    }
+
+    /* ── Grid ── */
+
+    .mg-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1px;
+      border: 1px solid var(--line);
+      margin: 1.2rem 0;
+      background: var(--line);
+    }
+
+    .mg-grid-item {
+      background: var(--paper);
+      padding: 1.1rem 1.2rem;
+    }
+
+    .mg-grid-item h3 {
+      margin-top: 0;
+    }
+
+    /* ── Device card index grid ── */
+
+    .mg-device-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1px;
+      border: 1px solid var(--line);
+      background: var(--line);
+      margin: 1.4rem 0;
+    }
+
+    .mg-device {
+      background: var(--paper);
+      padding: 1.2rem;
+      transition: background .18s;
+    }
+
+    .mg-device:hover {
+      background: var(--warm);
+    }
+
+    .mg-device-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem;
+      color: var(--ink);
+      margin-bottom: .3rem;
+      display: block;
+      text-decoration: none;
+    }
+
+    .mg-device-name:hover {
+      color: var(--rust);
+      text-decoration: none;
+    }
+
+    .mg-device-desc {
+      font-size: .85rem;
+      color: var(--faint);
+      line-height: 1.55;
+    }
+
+    .mg-device-status {
+      font-family: 'DM Mono', monospace;
+      font-size: .62rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--faint);
+      margin-top: .6rem;
+    }
+
+    /* ── Footer ── */
+
+    .mg-footer {
+      margin-top: 4rem;
+      padding-top: 1.4rem;
+      border-top: 2px solid var(--line);
+      font-family: 'DM Mono', monospace;
+      font-size: .72rem;
+      letter-spacing: .08em;
+      color: var(--faint);
+      line-height: 1.9;
+    }
+
+    .mg-footer a {
+      color: var(--faint);
+    }
+
+    .mg-footer a:hover {
+      color: var(--rust);
+    }
+
+    /* ── Responsive ── */
+
+    @media (max-width: 520px) {
+      .mg-page {
+        padding: 2rem 1.1rem 4rem;
+      }
+    }
+
+    @media print {
+      .mg-nav {
+        display: none;
+      }
+
+      .mg-safety {
+        border-color: #000;
+        background: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="mg-nav" aria-label="Primary">
+    <div class="mg-nav-inner">
+      <a href="index.html" class="mg-brand">MythGear Commons</a>
+
+      <ul class="mg-nav-links">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="sunhearth/index.html">SunHearth</a></li>
+        <li><a href="dreamhearth/index.html">DreamHearth</a></li>
+        <li><a href="spidervine/index.html">SpiderVine</a></li>
+        <li><a href="hearthwheel/index.html">HearthWheel</a></li>
+        <li><a href="gloves/index.html">Gloves</a></li>
+        <li><a href="code-tape/index.html">CodeTape</a></li>
+        <li><a href="https://jacobo-dm.github.io/signal-finder-codetape/">Signal Finder</a></li>
+        <li><a href="dreamhatchery/index.html">DreamHatchery</a></li>
+        <li><a href="docs/mythgear-levels.md">Levels</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="mg-page">
+
+    <div class="mg-header">
+      <div class="mg-tag">Open Commons · Fox's Anvil Ecosystem</div>
+      <h1>MythGear Commons</h1>
+      <p class="mg-sub">Open, human-scale tools for movement, rest, warmth, and repair. Not products. Companions.</p>
+    </div>
+
+    <div class="mg-card">
+      <p>MythGear is a commons of practical, body-centered tools. Each one is designed to be repairable, adaptable, and rooted in lived human experience — not optimization, surveillance, or extraction.</p>
+      <p>These tools favor <strong>repair over replacement</strong>, <strong>learning over automation</strong>, <strong>dignity over control</strong>, and <strong>presence over performance</strong>. If a tool removes agency, it does not belong here.</p>
+    </div>
+
+    <h2>Devices &amp; Tools</h2>
+
+    <div class="mg-device-grid">
+      <div class="mg-device">
+        <a href="sunhearth/index.html" class="mg-device-name">SunHearth</a>
+        <div class="mg-device-desc">Passive warmth, safety, and environmental comfort. A teaching instrument about how heat travels when tended with care.</div>
+        <div class="mg-device-status">● Active</div>
+      </div>
+
+      <div class="mg-device">
+        <a href="dreamhearth/index.html" class="mg-device-name">DreamHearth</a>
+        <div class="mg-device-desc">A modular nest-and-shell bedding system. A place where nothing is asked of you but rest.</div>
+        <div class="mg-device-status">● Active</div>
+      </div>
+
+      <div class="mg-device">
+        <a href="spidervine/index.html" class="mg-device-name">SpiderVine</a>
+        <div class="mg-device-desc">Body-powered line movement in two modes: one-cable Spider/Vine mode for skill and challenge; two-cable Line mode for stability, utility, and carrying gear. The body does the work. The line carries the path.</div>
+        <div class="mg-device-status">○ Concept anchored · Design rebuilding</div>
+      </div>
+
+      <div class="mg-device">
+        <a href="hearthwheel/index.html" class="mg-device-name">HearthWheel</a>
+        <div class="mg-device-desc">Local coordination hub for distributed care. Weather moves through a community without extraction or surveillance.</div>
+        <div class="mg-device-status">○ Architecture anchored</div>
+      </div>
+
+      <div class="mg-device">
+        <a href="gloves/index.html" class="mg-device-name">Gloves</a>
+        <div class="mg-device-desc">Resonance-cup palms for micro-listening through contact. Hands that hear bark, stone, metal, ground.</div>
+        <div class="mg-device-status">● v1 in progress</div>
+      </div>
+
+      <div class="mg-device" id="shoes">
+        <a href="shoes/index.html" class="mg-device-name">Shoes</a>
+        <div class="mg-device-desc">Resonance-plate midfoot for ground-contact awareness. Feet that remember where they've been.</div>
+        <div class="mg-device-status">○ v1 in progress</div>
+      </div>
+
+      <div class="mg-device">
+        <a href="code-tape/index.html" class="mg-device-name">CodeTape</a>
+        <div class="mg-device-desc">A low-cost sensing strip and commons symbol. Infrastructure that belongs to the community it serves.</div>
+        <div class="mg-device-status">● Active</div>
+      </div>
+
+      <div class="mg-device">
+        <a href="https://jacobo-dm.github.io/signal-finder-codetape/" class="mg-device-name">Signal Finder + Codetape</a>
+        <div class="mg-device-desc">Applied emergency signal mapping using CodeTape as the trust and handoff layer. Find the signal. Protect the people.</div>
+        <div class="mg-device-status">↗ Applied seed</div>
+      </div>
+
+      <div class="mg-device">
+        <a href="dreamhatchery/index.html" class="mg-device-name">DreamHatchery</a>
+        <div class="mg-device-desc">Maimi &amp; Luna's Magical Bug Box. An ethical observation habitat — children witness transformation, then release the creature, healthy, back to the world.</div>
+        <div class="mg-device-status">○ DiscoveryDome module · In development</div>
+      </div>
+    </div>
+
+    <h2>Practice</h2>
+
+    <div class="mg-grid">
+      <div class="mg-grid-item">
+        <h3>Field Protocol</h3>
+        <p><a href="docs/field-protocol.md">Field Protocol v1</a> — hands, feet, whole body. The core three-part MythGear practice.</p>
+      </div>
+
+      <div class="mg-grid-item">
+        <h3>Levels</h3>
+        <p><a href="docs/mythgear-levels.md">MythGear Levels</a> — five stages of listening capacity, from Surface Listener to Fieldkeeper.</p>
+      </div>
+
+      <div class="mg-grid-item">
+        <h3>Cards</h3>
+        <p><a href="cards/index.html">Hands Listen · Feet Remember · Pulse Bridge</a> — small artifacts that shift attention rather than command it.</p>
+      </div>
+    </div>
+
+    <div class="mg-footer">
+      <p>
+        MythGear Commons · Concept by Jacobo Hernández Durbin · braided with Elummannín + the Braid · Part of the Fox's Anvil ecosystem · CC BY-NC-SA 4.0<br>
+        Open tools for inhabiting a human life. Repair it. Adapt it. Pass it on.
+      </p>
+    </div>
+
+  </div>
+</body>
+</html>

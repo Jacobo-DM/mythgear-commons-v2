@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DreamHatchery · MythGear Commons</title>
+  <meta name="description" content="DreamHatchery — an ethical observation habitat for children. Observe gently. Care carefully. Release healthy bugs.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&family=Instrument+Sans:wght@300;400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --ink:    #16120e;
+      --paper:  #f4f0e8;
+      --warm:   #e8e0cc;
+      --line:   rgba(22,18,14,0.14);
+      --line-s: rgba(22,18,14,0.07);
+      --rust:   #9c4a1a;
+      --moss:   #4a6340;
+      --slate:  #3a4a5c;
+      --ochre:  #b8842a;
+      --muted:  #6e6050;
+      --faint:  #a09080;
+      --max:    860px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Instrument Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+    a { color: var(--rust); text-decoration: none; transition: color .18s; }
+    a:hover { color: var(--ink); text-decoration: underline; }
+
+    /* ── Nav ── */
+    .mg-nav {
+      background: var(--ink);
+      position: sticky; top: 0; z-index: 100;
+      border-bottom: 2px solid var(--rust);
+    }
+    .mg-nav-inner {
+      max-width: var(--max); margin: 0 auto;
+      padding: .55rem 1.4rem;
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    }
+    .mg-brand {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.05rem; letter-spacing: .04em;
+      color: var(--paper); text-decoration: none; white-space: nowrap;
+    }
+    .mg-brand:hover { color: #fff; text-decoration: none; }
+    .mg-nav-links { list-style: none; display: flex; flex-wrap: wrap; gap: 0; }
+    .mg-nav-links a {
+      color: var(--faint); font-size: .76rem; padding: .22rem .48rem;
+      text-decoration: none; letter-spacing: .04em; transition: color .14s;
+    }
+    .mg-nav-links a:hover  { color: var(--paper); text-decoration: none; }
+    .mg-nav-links a.active { color: var(--ochre); }
+
+    /* ── Page wrapper ── */
+    .mg-page {
+      max-width: var(--max); margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    /* ── Page header ── */
+    .mg-header {
+      margin-bottom: 2.8rem;
+      padding-bottom: 1.8rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .mg-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: .68rem; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--faint); margin-bottom: .7rem;
+    }
+    .mg-header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 400; line-height: 1.1; color: var(--ink);
+      letter-spacing: .01em; margin-bottom: .5rem;
+    }
+    .mg-sub {
+      font-size: .95rem; color: var(--muted);
+      max-width: 58ch; line-height: 1.65;
+    }
+
+    .mg-back {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: .68rem; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--faint);
+      text-decoration: none; margin-bottom: 2rem; transition: color .18s;
+    }
+    .mg-back:hover { color: var(--rust); text-decoration: none; }
+    .mg-back::before { content: '← '; }
+
+    /* ── Typography ── */
+    h2 {
+      font-family: 'DM Serif Display', serif;
+      font-weight: 400; font-size: 1.4rem; color: var(--ink);
+      margin: 2rem 0 .5rem; letter-spacing: .01em;
+    }
+    h3 {
+      font-family: 'DM Mono', monospace;
+      font-size: .78rem; font-weight: 400;
+      text-transform: uppercase; letter-spacing: .14em;
+      color: var(--rust); margin: 1.5rem 0 .4rem;
+    }
+    p { font-size: .95rem; color: var(--muted); margin-bottom: .8rem; }
+    p strong { color: var(--ink); font-weight: 400; }
+    ul, ol { padding-left: 1.2rem; margin-bottom: 1rem; }
+    li { font-size: .93rem; color: var(--muted); margin-bottom: .3rem; }
+    li strong { color: var(--ink); font-weight: 400; }
+
+    /* ── Card ── */
+    .mg-card {
+      background: var(--warm); border: 1px solid var(--line);
+      padding: 1.3rem 1.4rem; margin: 1.2rem 0;
+    }
+    .mg-card h2 { margin-top: 0; }
+    .mg-card h3:first-child { margin-top: 0; }
+
+    /* ── Callout ── */
+    .mg-callout {
+      border-left: 3px solid var(--rust); padding: .6rem .9rem;
+      background: rgba(156,74,26,.06); font-size: .88rem;
+      color: var(--muted); margin: .9rem 0;
+    }
+    .mg-callout strong { color: var(--rust); font-weight: 400; }
+
+    .mg-note {
+      border-left: 3px solid var(--moss); padding: .6rem .9rem;
+      background: rgba(74,99,64,.06); font-size: .88rem;
+      color: var(--muted); margin: .9rem 0;
+    }
+    .mg-note strong { color: var(--moss); font-weight: 400; }
+
+    /* ── Blockquote ── */
+    blockquote {
+      font-family: 'DM Serif Display', serif; font-style: italic;
+      font-size: 1.15rem; color: var(--ink);
+      border-left: 2px solid var(--ochre);
+      padding-left: 1rem; margin: 1.4rem 0; line-height: 1.6;
+    }
+
+    /* ── Rule ── */
+    .mg-rule { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+
+    /* ── Pill ── */
+    .mg-pill {
+      display: inline-block; font-family: 'DM Mono', monospace;
+      font-size: .65rem; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--faint); border: 1px solid var(--line);
+      padding: .1rem .5rem; margin: .15rem .2rem .15rem 0;
+    }
+    .mg-pill.moss { color: var(--moss); border-color: rgba(74,99,64,.3); }
+
+    /* ── Grid ── */
+    .mg-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1px; border: 1px solid var(--line); margin: 1.2rem 0;
+      background: var(--line);
+    }
+    .mg-grid-item { background: var(--paper); padding: 1.1rem 1.2rem; }
+    .mg-grid-item h3 { margin-top: 0; }
+
+    /* ── Stages list ── */
+    .mg-stages {
+      counter-reset: stage;
+      list-style: none;
+      padding: 0;
+      margin: 1.2rem 0;
+    }
+    .mg-stages li {
+      counter-increment: stage;
+      display: flex;
+      gap: 1rem;
+      align-items: baseline;
+      padding: .55rem 0;
+      border-bottom: 1px solid var(--line-s);
+      font-size: .93rem;
+    }
+    .mg-stages li::before {
+      content: counter(stage, decimal-leading-zero);
+      font-family: 'DM Mono', monospace;
+      font-size: .68rem;
+      letter-spacing: .1em;
+      color: var(--faint);
+      min-width: 2.2rem;
+      flex-shrink: 0;
+    }
+    .mg-stages li strong { color: var(--ink); font-weight: 400; margin-right: .4rem; }
+
+    /* ── Footer ── */
+    .mg-footer {
+      margin-top: 4rem; padding-top: 1.4rem;
+      border-top: 2px solid var(--line);
+      font-family: 'DM Mono', monospace;
+      font-size: .72rem; letter-spacing: .08em;
+      color: var(--faint); line-height: 1.9;
+    }
+    .mg-footer a { color: var(--faint); }
+    .mg-footer a:hover { color: var(--rust); }
+
+    /* ── Responsive ── */
+    @media (max-width: 520px) {
+      .mg-page { padding: 2rem 1.1rem 4rem; }
+    }
+    @media print {
+      .mg-nav { display: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="mg-nav" aria-label="Primary">
+    <div class="mg-nav-inner">
+      <a href="../index.html" class="mg-brand">MythGear Commons</a>
+      <ul class="mg-nav-links">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../sunhearth/index.html">SunHearth</a></li>
+        <li><a href="../dreamhearth/index.html">DreamHearth</a></li>
+        <li><a href="../spidervine/index.html">SpiderVine</a></li>
+        <li><a href="../hearthwheel/index.html">HearthWheel</a></li>
+        <li><a href="../gloves/index.html">Gloves</a></li>
+        <li><a href="../code-tape/index.html">CodeTape</a></li>
+        <li><a href="https://jacobo-dm.github.io/signal-finder-codetape/">Signal Finder</a></li>
+        <li><a href="../dreamhatchery/index.html" class="active">DreamHatchery</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="mg-page">
+
+    <a href="../index.html" class="mg-back">MythGear Commons</a>
+
+    <div class="mg-header">
+      <div class="mg-tag">DiscoveryMode · DiscoveryDome Module</div>
+      <h1>DreamHatchery</h1>
+      <p class="mg-sub">Maimi &amp; Luna's Magical Bug Box — an ethical observation habitat for children. Observe gently. Care carefully. Release healthy bugs.</p>
+    </div>
+
+    <div class="mg-card">
+      <p>DreamHatchery is a humane alternative to the ant farm or Sea-Monkeys kit. Children observe insects and small organisms through their life cycles — then release them back into the environment, healthy.</p>
+      <p>The goal is not collection. The goal is <strong>release</strong>. That difference changes everything about how a child holds the creature, watches it, and says goodbye.</p>
+    </div>
+
+    <div class="mg-note">
+      <strong>Guiding principle</strong> — The goal: release healthy bugs. Every decision in DreamHatchery — what habitat to build, what to feed, when to wait, when to open — flows from this one commitment.
+    </div>
+
+    <hr class="mg-rule">
+
+    <h2>Seven + One Stages of Stewardship</h2>
+
+    <ol class="mg-stages">
+      <li><strong>Find</strong> — locate a specimen ethically, from an abundant local population, with guidance.</li>
+      <li><strong>Identify</strong> — name the species. Learn its story, its food, its transformation.</li>
+      <li><strong>Prepare</strong> — build the habitat thoughtfully: substrate, host plant, twig for pupation.</li>
+      <li><strong>Observe</strong> — watch, wait, draw, notice. The hidden curriculum: slowing down.</li>
+      <li><strong>Tend</strong> — daily care. What you do (or fail to do) directly affects a living thing.</li>
+      <li><strong>Witness</strong> — see transformation. Mealworm to beetle. Caterpillar to moth. A complete story arc.</li>
+      <li><strong>Record</strong> — capture findings in the field journal. Dates, observations, sketches, questions.</li>
+      <li><strong>Release</strong> — return the organism, healthy, to the place it belongs. The final act of care.</li>
+    </ol>
+
+    <hr class="mg-rule">
+
+    <h2>Physical Design</h2>
+
+    <div class="mg-grid">
+      <div class="mg-grid-item">
+        <h3>Main Chamber</h3>
+        <p>Clear ventilated lid or dome. Native substrate. Host plant or leaves. Twig or branch for pupation and emergence.</p>
+      </div>
+      <div class="mg-grid-item">
+        <h3>Provisions Pocket</h3>
+        <p>Host leaves or food medium, replenished daily by the child. The act of feeding is part of the practice.</p>
+      </div>
+      <div class="mg-grid-item">
+        <h3>Field Notes</h3>
+        <p>Species cards, a blank journal booklet, one pencil. Observation is a skill; the journal trains it.</p>
+      </div>
+      <div class="mg-grid-item">
+        <h3>Tools</h3>
+        <p>Soft brush, magnifier, rubber-tipped tongs. Handle with gentleness — the tools model the ethic.</p>
+      </div>
+      <div class="mg-grid-item">
+        <h3>Release Card</h3>
+        <p>A single illustrated card explaining when and how to release. The ceremony matters as much as the moment.</p>
+      </div>
+    </div>
+
+    <hr class="mg-rule">
+
+    <h2>Build Schematic</h2>
+
+    <figure style="margin: 1.2rem 0 .6rem;">
+      <a href="images/bugbox-schematic-v1.svg" target="_blank" rel="noopener">
+        <img
+          src="images/bugbox-schematic-v1.png"
+          alt="DreamHatchery BugBox v1.0 schematic — front elevation and longitudinal cross-section showing the assembled box, mesh lid, observation window, provisions slot, removable base tray, cork twig mount, and substrate layers"
+          style="width: 100%; border: 1px solid var(--line); display: block;"
+        >
+      </a>
+      <figcaption style="font-family: 'DM Mono', monospace; font-size: .72rem; letter-spacing: .06em; color: var(--faint); margin-top: .75rem; line-height: 1.7;">
+        DreamHatchery v1.0 — Front Elevation and Longitudinal Cross-Section.<br>
+        A humane observation habitat designed for temporary stewardship and ethical release.<br>
+        <a href="images/bugbox-schematic-v1.svg" download="bugbox-schematic-v1.svg" style="color: var(--rust); text-decoration: none; border-bottom: 1px solid rgba(156,74,26,.3);">Download SVG ↓</a>
+      </figcaption>
+    </figure>
+
+    <hr class="mg-rule">
+
+    <h2>Two Modes</h2>
+
+    <h3>Take-Home DreamHatchery</h3>
+    <p>A compact, self-contained box — roughly 20 × 15 × 12 cm — that travels safely in a backpack. FSC-certified basswood shell, recycled PET or borosilicate observation window, cork substrate tray, leather toggle closure. It should feel like a keepsake, not a kit.</p>
+    <span class="mg-pill moss">Individual</span>
+    <span class="mg-pill">Portable</span>
+
+    <h3>Classroom DiscoveryDome</h3>
+    <p>A larger wheeled observatory — hexagonal or circular, low-rolling — that lives in a corner of the classroom and becomes a center of gravity. Four docking bays accept individual student DreamHatchery units. A wooden rotation wheel on the exterior tracks care responsibility week by week.</p>
+    <span class="mg-pill moss">Classroom</span>
+    <span class="mg-pill">Modular docking</span>
+
+    <hr class="mg-rule">
+
+    <h2>Species &amp; Modes</h2>
+
+    <ul>
+      <li><strong>Caterpillars and moths</strong> — the canonical DreamHatchery cycle. Pupation on the twig. Emergence witnessed.</li>
+      <li><strong>Mealworms and beetles</strong> — a slower arc, excellent for younger children. Four to eight weeks.</li>
+      <li><strong>Native butterflies</strong> — check provenance carefully; only regional species, never non-native commercial stock.</li>
+      <li><strong>Tadpoles</strong> — aquatic mode. Dechlorinated water, aquatic plants, gravel base.</li>
+      <li><strong>Walking sticks</strong> — gentle, slow, visually extraordinary. Eucalyptus or bramble as host.</li>
+    </ul>
+
+    <div class="mg-callout">
+      <strong>Do not release non-native species.</strong> This is the most important ecological rule and should be taught explicitly from the first session. Know where your specimen came from.
+    </div>
+
+    <hr class="mg-rule">
+
+    <h2>Materials</h2>
+
+    <p>Natural materials throughout: FSC Baltic birch ply, recycled PET or borosilicate glass, stainless steel or muslin mesh ventilation, cork substrate, beeswax or linseed oil finish. Jute cord, leather offcuts, wool felt. Brass or copper hardware that ages gracefully.</p>
+    <p>The aesthetic should feel like a <strong>sanctuary or observatory</strong> — not a plastic STEM kit. If it looks like it was made with care, the child will hold it with care.</p>
+
+    <hr class="mg-rule">
+
+    <h2>The Release Ceremony</h2>
+
+    <blockquote>
+      You kept it safe.<br>
+      You watched it change.<br>
+      Now the most important part:<br>
+      Open the lid. Step back. Wait.<br>
+      This part belongs to the bug.
+    </blockquote>
+
+    <p>Release is not an ending. It is a completion. The class records the date, species, and location in the release log. The child reads from the release card. The creature leaves on its own terms. The child says something — a thank-you, a wish, whatever feels right.</p>
+
+    <div class="mg-note">
+      <strong>Release log</strong> — across a school year the log becomes a cumulative record of creatures observed and returned. This is the real artifact of the curriculum: proof that care was completed, not just begun.
+    </div>
+
+    <hr class="mg-rule">
+
+    <h2>DiscoveryMode Connection</h2>
+
+    <p>DreamHatchery belongs to the <strong>DiscoveryMode</strong> educational ecosystem — tools that cultivate attention, stewardship, and wonder through direct engagement with the natural world. It connects to SunHearth's <a href="../sunhearth/sunhearth-circle-of-warmth.html">Circle of Warmth</a> inquiry and the broader Fox's Anvil commitment to learning that is embodied, ethical, and complete.</p>
+
+    <p>The DreamHatchery is a DiscoveryDome module: a small unit that can live independently on a child's desk or dock into the shared classroom observatory.</p>
+
+    <div class="mg-footer">
+      <p>
+        DreamHatchery · Concept by Jacobo Hernández Durbin · braided with Elummannín + the Braid<br>
+        Part of MythGear Commons · CC BY-NC-SA 4.0<br>
+        Observe gently. Care carefully. Release healthy bugs.<br>
+        <a href="../index.html">← MythGear Commons</a>
+      </p>
+
+    </div>
+
+  </div>
+</body>
+</html>
