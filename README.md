@@ -35,7 +35,7 @@ If a tool removes agency, it does not belong here.
 | [Gloves](gloves/) | Resonance-cup palms for micro-listening through contact | v1 in progress |
 | [Shoes](shoes/) | Resonance-plate footwear for ground-contact awareness | v1 in progress |
 | [CodeTape](code-tape/) | Commons sensing strip and symbol. Two layers: practical and cultural. | Active |
-| [Signal Finder](https://jacobo-dm.github.io/signal-finder-codetape/) | Applied emergency signal mapping using CodeTape as handoff layer. | Applied seed |
+| [Signal Finder](https://jacobo-dm.github.io/Forge/modules/signal-finder.html) | Applied emergency signal-finding / Applied seed |
 
 ---
 
