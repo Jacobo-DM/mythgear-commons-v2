@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DiscoveryDome — Shape as Commons</title>
+<style>
+  :root{
+    --bg:#0b1020;
+    --bg-glow:#0e1530;
+    --ink:#e8eefc;
+    --ink-soft:#b9c4dd;
+    --ink-faint:#7f8aa6;
+    --accent:#8fb6d9;
+    --rule:#1d2742;
+    --measure:36rem;
+  }
+
+  *{box-sizing:border-box;}
+
+  html{ -webkit-text-size-adjust:100%; }
+
+  body{
+    margin:0;
+    background:
+      radial-gradient(120% 80% at 50% -10%, var(--bg-glow) 0%, var(--bg) 55%) fixed,
+      var(--bg);
+    color:var(--ink);
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:clamp(1.02rem,0.95rem + 0.4vw,1.18rem);
+    line-height:1.85;
+    letter-spacing:0.1px;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+
+  .wrap{
+    max-width:var(--measure);
+    margin:0 auto;
+    padding:clamp(2.2rem,6vw,5rem) clamp(1.4rem,5vw,2rem) 5rem;
+  }
+
+  .eyebrow{
+    font-size:0.72rem;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    margin:0 0 2.6rem;
+  }
+
+  .eyebrow a{
+    color:inherit;
+    text-decoration:none;
+    border-bottom:1px solid transparent;
+  }
+
+  .eyebrow a:hover{
+    border-bottom-color:var(--ink-faint);
+  }
+
+  .open{
+    text-align:center;
+    margin:0 0 clamp(2.4rem,7vw,4rem);
+  }
+
+  .sketch{
+    display:block;
+    max-width:100%;
+    margin:0 auto 2.2rem;
+    opacity:0.9;
+    border-radius:2px;
+  }
+
+  .glyph{
+    display:block;
+    width:clamp(140px,42vw,200px);
+    height:auto;
+    margin:0 auto 2.2rem;
+  }
+
+  .glyph .drop{
+    fill:var(--accent);
+    opacity:0.55;
+  }
+
+  .glyph .dome{
+    fill:none;
+    stroke:var(--accent);
+    stroke-width:1.1;
+    opacity:0.30;
+  }
+
+  h1{
+    font-weight:normal;
+    font-size:clamp(1.5rem,1.2rem + 1.6vw,2.1rem);
+    line-height:1.3;
+    letter-spacing:0.2px;
+    margin:0 0 2rem;
+    color:var(--ink);
+  }
+
+  h1 .sub{
+    display:block;
+    font-size:0.5em;
+    letter-spacing:0.26em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    margin-top:1.1rem;
+  }
+
+  .epigraph{
+    font-size:clamp(1.18rem,1.05rem + 0.7vw,1.5rem);
+    line-height:1.7;
+    color:var(--ink);
+    margin:0 auto;
+    max-width:30rem;
+  }
+
+  .epigraph span{
+    display:block;
+  }
+
+  .reveal{
+    opacity:0;
+    transform:translateY(8px);
+    animation:rise 1.2s ease forwards;
+  }
+
+  .d1{ animation-delay:0.15s; }
+  .d2{ animation-delay:0.6s; }
+  .d3{ animation-delay:1.05s; }
+  .d4{ animation-delay:1.5s; }
+
+  @keyframes rise{
+    to{
+      opacity:1;
+      transform:none;
+    }
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .reveal{
+      animation:none;
+      opacity:1;
+      transform:none;
+    }
+  }
+
+  section{
+    margin-top:clamp(2.6rem,7vw,4rem);
+  }
+
+  .label{
+    font-size:0.72rem;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:var(--accent);
+    opacity:0.85;
+    margin:0 0 1.6rem;
+  }
+
+  .env h2{
+    font-weight:normal;
+    font-style:italic;
+    font-size:1.12rem;
+    color:var(--ink);
+    margin:2.2rem 0 0.5rem;
+  }
+
+  .env h2:first-of-type{
+    margin-top:0;
+  }
+
+  .env p{
+    margin:0;
+    color:var(--ink-soft);
+  }
+
+  .turns{
+    list-style:none;
+    margin:0;
+    padding:0;
+  }
+
+  .turns li{
+    margin:0;
+    padding:0.55rem 0;
+    border-bottom:1px solid var(--rule);
+    color:var(--ink-soft);
+  }
+
+  .turns li:last-child{
+    border-bottom:none;
+  }
+
+  .turns b{
+    color:var(--ink);
+    font-weight:normal;
+    font-style:italic;
+  }
+
+  .flow{
+    margin:1.8rem 0 0;
+    color:var(--ink-faint);
+    font-style:italic;
+    font-size:0.96rem;
+    line-height:2.1;
+  }
+
+  .invite{
+    text-align:center;
+    border-top:1px solid var(--rule);
+    border-bottom:1px solid var(--rule);
+    padding:clamp(2rem,6vw,3rem) 0;
+  }
+
+  .invite p{
+    margin:0;
+  }
+
+  .invite .lead{
+    color:var(--ink-faint);
+    font-style:italic;
+    margin-bottom:1.4rem;
+    font-size:0.96rem;
+  }
+
+  .invite .verse{
+    color:var(--ink);
+    font-size:clamp(1.1rem,1rem + 0.5vw,1.35rem);
+    line-height:1.9;
+  }
+
+  .invite .verse span{
+    display:block;
+  }
+
+  .cradle p{
+    color:var(--ink-soft);
+    margin:0 0 1.2rem;
+  }
+
+  .cradle p:last-child{
+    margin-bottom:0;
+  }
+
+  .cradle .name{
+    color:var(--ink);
+    font-style:italic;
+  }
+
+  .cradle-verse{
+    font-style:italic;
+    color:var(--ink);
+    line-height:2.05;
+    margin:1.4rem 0 1.4rem !important;
+    padding-left:1.1rem;
+    border-left:1px solid var(--rule);
+  }
+
+  .cradle-verse span{
+    display:block;
+  }
+
+  .bridges{
+    display:grid;
+    gap:1.6rem;
+  }
+
+  .bridge{
+    padding-left:1.1rem;
+    border-left:1px solid var(--rule);
+  }
+
+  .bridge .name{
+    color:var(--accent);
+    font-style:italic;
+  }
+
+  .bridge .what{
+    color:var(--ink-soft);
+  }
+
+  .bridge p{
+    margin:0;
+  }
+
+  .horizon{
+    margin-top:clamp(3rem,9vw,5.5rem);
+    text-align:center;
+    color:var(--ink-soft);
+  }
+
+  .horizon p{
+    max-width:30rem;
+    margin:0 auto;
+  }
+
+  .horizon .hush{
+    display:block;
+    margin-top:1.6rem;
+    color:var(--ink-faint);
+    font-style:italic;
+  }
+
+  footer{
+    margin-top:clamp(3.5rem,10vw,6rem);
+    padding-top:1.6rem;
+    border-top:1px solid var(--rule);
+    font-size:0.78rem;
+    color:var(--ink-faint);
+    text-align:center;
+    line-height:1.9;
+  }
+
+  footer a{
+    color:var(--ink-faint);
+    text-decoration:none;
+    border-bottom:1px solid var(--rule);
+  }
+
+  footer a:hover{
+    color:var(--ink-soft);
+  }
+</style>
+</head>
+
+<body>
+<main class="wrap">
+
+  <p class="eyebrow">
+    <a href="../index.html">MythGear Commons</a> &middot; DiscoveryDome
+  </p>
+
+  <div class="open">
+    <!-- Optional image. If the file is missing, the page removes it cleanly. -->
+    <img class="sketch" src="assets/discoverydome-sketch.jpg" alt="DiscoveryDome sketch" onerror="this.remove()">
+
+    <svg class="glyph reveal d1" viewBox="0 0 200 120" role="img" aria-label="A drop of rain above an open dome">
+      <path class="drop" d="M100 8 C100 8 110 26 110 33 a10 10 0 1 1 -20 0 C90 26 100 8 100 8 Z"/>
+      <path class="dome" d="M14 104 C50 40 150 40 186 104"/>
+    </svg>
+
+    <h1 class="reveal d2">
+      DiscoveryDome
+      <span class="sub">Shape as Commons</span>
+    </h1>
+
+    <p class="epigraph reveal d3">
+      <span>A cup is enough.</span>
+      <span>An open palm is enough.</span>
+      <span>A single drop of rain is already a perfect dome.</span>
+    </p>
+  </div>
+
+  <p class="reveal d4" style="text-align:center;color:var(--ink-soft);max-width:32rem;margin:0 auto;">
+    This is not an attempt to improve on wonder.
+    It is a way to make room for it.
+  </p>
+
+  <section class="env">
+    <p class="label">Story Envelope</p>
+
+    <h2>The wound or need this answers</h2>
+    <p>We are taught to feel outside the world, looking in &mdash; observers of a cosmos that is not ours. DiscoveryDome answers the older need beneath that: a place to come close to one ordinary thing, long enough to remember we are one of the ways the cosmos learns to look closely.</p>
+
+    <h2>The kind of attention it invites</h2>
+    <p>Positional, patient, bodily. Not &ldquo;what is this,&rdquo; answered fast, but: come close, look gently, touch less than you want to, wonder more than you planned. The eye begins it; the ear, the hand, and the held breath carry it further.</p>
+
+    <h2>How it may be used</h2>
+    <p>As whatever the parabola becomes when you turn it &mdash; cup, bowl, dome, lens, pool, echo chamber, tiny garden, tide-pool classroom, drum, bell, gong. Small or large, dry or aquatic, quiet or shared. A child and a beetle and one question is a complete instance.</p>
+
+    <h2>How it should not be used</h2>
+    <p>Not as an improvement on wonder, and not technology-first. Not store-bought past the point where the maker&rsquo;s hand disappears &mdash; a dome made by the student carries the maker; one merely acquired does not. Not scaled before a single cup has earned it.</p>
+
+    <h2>What remains unfinished</h2>
+    <p>The city. The scattering of small observatories &mdash; some loud, some quiet enough to hear a heartbeat &mdash; stays a horizon, not a roadmap. It should grow the way a hearth grows: only as fast as people gather around it.</p>
+  </section>
+
+  <section>
+    <p class="label">Shape Bridge</p>
+    <p style="margin:0 0 1.6rem;color:var(--ink-soft);">
+      A parabola is a listening shape. A catching shape. A focusing shape. A sheltering shape. It does not only gather light &mdash; it gathers sound, and water, and attention, and care.
+    </p>
+
+    <ul class="turns">
+      <li>Turned one way, it becomes a <b>dome</b>.</li>
+      <li>Turned another, it becomes a <b>pool</b>.</li>
+      <li>Held small, it becomes a <b>cup</b>.</li>
+      <li>Made clear, it becomes a <b>lens</b>.</li>
+      <li>Made hollow, it becomes an <b>echo chamber</b>.</li>
+      <li>Filled with moss, it becomes a <b>tiny garden</b>.</li>
+      <li>Placed by the sea, it becomes a <b>tide-pool classroom</b>.</li>
+      <li>Tapped, it becomes a <b>drum</b>.</li>
+      <li>Hung, it becomes a <b>bell</b>.</li>
+      <li>Struck, it becomes a <b>gong</b>.</li>
+    </ul>
+
+    <p class="flow">
+      cup &middot; bowl &middot; dome &middot; lens &middot; pool &middot; echo chamber &middot; tiny garden &middot; tide-pool classroom &middot; drum &middot; bell &middot; gong
+    </p>
+  </section>
+
+  <section class="cradle">
+    <p class="label">A Slow Stand</p>
+
+    <p><span class="name">MoonCradle</span> is one way of holding the shape while it learns to move &mdash; a parabolic bowl set in a cradle and adjusted by hand. The movement is not for spectacle. It is for noticing. Manual, visible, slow, repairable, teachable; no motors in the first seed.</p>
+
+    <p class="cradle-verse">
+      <span>Lift it, and light answers differently.</span>
+      <span>Tilt it, and water draws another line.</span>
+      <span>Turn it, and sound gathers somewhere new.</span>
+    </p>
+
+    <p>A bowl becomes an instrument when it can be moved with care. And still &mdash; a cup is enough, and the drop of rain is still first. Start with the smallest honest version.</p>
+  </section>
+
+  <section class="invite">
+    <p class="lead">The build may change. The invitation does not.</p>
+    <p class="verse">
+      <span>Come close.</span>
+      <span>Look gently.</span>
+      <span>Touch less than you want to.</span>
+      <span>Wonder more than you planned.</span>
+    </p>
+  </section>
+
+  <section>
+    <p class="label">Three Bridges</p>
+    <p style="margin:0 0 1.8rem;color:var(--ink-soft);">
+      One shape, held three ways.
+    </p>
+
+    <div class="bridges">
+      <div class="bridge">
+        <p><span class="name">As commons</span> &mdash; <span class="what">shared shapes for public noticing, the &ldquo;a cup is enough&rdquo; ethic.</span></p>
+      </div>
+
+      <div class="bridge">
+        <p><span class="name">In MythGear</span> &mdash; <span class="what">the build: something that can be held &mdash; a cup, a bowl, a terrarium, a tide pool, a drum, a bell.</span></p>
+      </div>
+
+      <div class="bridge">
+        <p><span class="name">In DiscoveryMode</span> &mdash; <span class="what">the practice: look closely, listen gently, touch less than you want to, wonder more than you planned.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="horizon">
+    <p>
+      And held only as horizon, never yet as plan: a city full of shared noticing &mdash; some domes in libraries, some in parks, some near the waterfront, some large enough for a class to gather around, some only big enough for one child, one beetle, and one question.
+      <span class="hush">The drop of rain stays first. The city stays last.</span>
+    </p>
+  </section>
+
+  <footer>
+    DiscoveryDome &mdash; Shape as Commons<br>
+    A MythGear Commons offering for shared noticing, slow making, and wonder.
+  </footer>
+
+</main>
+</body>
+</html>
